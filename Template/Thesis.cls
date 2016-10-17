@@ -4,6 +4,10 @@
 
 \LoadClass{article}
 
+\RequirePackage{xeCJK}
+\RequirePackage{amsmath, amssymb, amsfonts}
+\RequirePackage[amsmath, amsthm, thmmarks, hyperref, thref]{ntheorem}
+
 \def\author#1#2{
   \gdef\Qiqi@chsauthor{#1}
   \gdef\Qiqi@engauthor{#2}
