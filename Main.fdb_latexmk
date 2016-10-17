@@ -1,0 +1,12 @@
+# Fdb version 3
+["pdflatex"] 1476676022 "Main.tex" "Main.pdf" "Main" 1476676024
+  "Main.aux" 1476676024 8 a94a2480d3289e625eea47cd1b285758 ""
+  "Main.tex" 1476675986 151 8fb92cec0d12c51f4606a4ff18de733c ""
+  "Template/Thesis.cls" 1476676020 317 6f62ba54f33b0c9679ddd2444c2cf653 ""
+  "c:/Program Files/texlive/2016/texmf-dist/tex/latex/base/article.cls" 1476585646 19821 310da678527a7dfe2a02c88af38079b7 ""
+  "c:/Program Files/texlive/2016/texmf-dist/tex/latex/base/size10.clo" 1476585647 8292 e897c12e1e886ce77fe26afc5d470886 ""
+  "c:/Program Files/texlive/2016/texmf-var/web2c/xetex/xelatex.fmt" 1476587673 3520445 b8578c34d3e26c21cf8f69c7da29c865 ""
+  (generated)
+  "Main.aux"
+  "Main.log"
+  "Main.pdf"
