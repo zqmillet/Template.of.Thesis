@@ -25,7 +25,7 @@
 }
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
 \ProcessOptionsX
-\LoadClass[12pt, a4paper]{book}
+\LoadClass[12pt, a4paper, openany]{book}
 \RequirePackage{xeCJK}
 \RequirePackage{CJKfntef}
 \RequirePackage{indentfirst}
@@ -35,13 +35,84 @@
 \linespread{1.2}
 \RequirePackage{amsmath, amssymb, amsfonts, wasysym}
 \RequirePackage[amsmath, amsthm, thmmarks, hyperref, thref]{ntheorem}
+\RequirePackage[bookmarks = true, pdfborder = {0 0 0}]{hyperref}
+\RequirePackage[titles]{tocloft}
+\newskip\old@cftbeforechapskip
+\old@cftbeforechapskip\cftbeforechapskip
+\let\old@l@chapter\l@chapter
+\let\old@l@section\l@section
+\def\l@chapter#1#2{\old@l@chapter{#1}{#2}\cftbeforechapskip0pt}% set your value here
+\def\l@section#1#2{\old@l@section{#1}{#2}\cftbeforechapskip\old@cftbeforechapskip}
+
+%\renewcommand\cftbeforechapskip{\vspace{-10pt}}
 \RequirePackage{geometry}
+\geometry{
+  top     = 1.2in,
+  bottom  = 1.2in,
+  left    = 1.0in,
+  right   = 1.0in,
+  headsep = 0.2in,
+  headheight = 15pt,
+  nomarginpar,
+  showframe
+}
 \RequirePackage{longtable, tabu}
 
 \setmainfont{Times New Roman}
 \setmonofont{Consolas}
-\setCJKmainfont[BoldFont = 黑体, ItalicFont = 仿宋]{宋体}
-\setCJKmonofont{楷体}
+\setCJKmainfont[BoldFont = 黑体, ItalicFont = 楷体]{宋体}
+\setCJKmonofont{仿宋}
+\RequirePackage{zhnumber}
+\RequirePackage{titlesec}
+\RequirePackage{titletoc}
+
+\newcommand\subsubsubsection{\@startsection{paragraph}{4}{\z@}
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{1.3ex \@plus.2ex}%
+{\bfseries\normalsize}}
+
+\newcommand\subsubsubsubsection{\@startsection{subparagraph}{5}{\z@}
+{-3.5ex \@plus -1ex \@minus -.2ex}%
+{2ex \@plus.2ex}%
+{\bfseries\normalsize}}
+
+
+\titleformat{\chapter}
+{
+  \bfseries
+  \centering
+  \fontsize{18pt}{23.4pt}\selectfont
+}
+{  
+  \zhnumber{\thechapter}
+}
+{1em}
+{}
+\titlespacing*{\chapter}{0pt}{18pt}{6pt}
+
+\titleformat*{\section}{\bfseries\fontsize{16pt}{20.8pt}\selectfont}
+\titlespacing*{\section}{0pt}{18pt}{6pt}
+\titleformat*{\subsection}{\bfseries\fontsize{14pt}{18.2pt}\selectfont}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+\titleformat*{\subsubsection}{\bfseries\fontsize{13pt}{16.9pt}\selectfont}
+\titlespacing*{\subsubsection}{0pt}{12pt}{6pt}
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+\contentsmargin{2.0em}
+
+\RequirePackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{}
+\chead{\makebox[0.7\textwidth][s]{\it \Qiqi@University@chs\Qiqi@ApplyName@chs}}
+\rhead{}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{0pt}
+\RequirePackage{etoolbox}
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+
 
 \RequirePackage{xparse}
 \DeclareDocumentCommand\Author{o m}{
@@ -128,6 +199,30 @@
   }
 }
 
+\DeclareDocumentCommand\Abstract{+o +m}
+{
+  \IfNoValueTF{#1}
+  {
+    \long\gdef\Qiqi@Abstract@chs{#2}
+    \long\gdef\Qiqi@Abstract@eng{#2}
+  }{
+    \long\gdef\Qiqi@Abstract@chs{#2}
+    \long\gdef\Qiqi@Abstract@eng{#1}
+  }
+}
+
+\DeclareDocumentCommand\Keywords{o m}{
+  \IfNoValueTF{#1}
+  {
+    \gdef\Qiqi@Keywords@chs{#2}
+    \gdef\Qiqi@Keywords@eng{#2}
+  }
+  {
+    \gdef\Qiqi@Keywords@chs{#2}
+    \gdef\Qiqi@Keywords@eng{#1}
+  }
+}
+
 \DeclareDocumentCommand\UniversityLogo{m}{
   \gdef\Qiqi@UniversityLogo{#1}
 }
@@ -207,14 +302,17 @@
 { % else
 }
 
-\def\maketitle{
-  \newgeometry{
-    top    = 1.2in,
-    bottom = 1.2in,
-    left   = 1.0in,
-    right  = 1.0in
-  }
+\def\indexname{索引}
+\def\figurename{图}
+\def\tablename{表}
+\def\listingscaption{代码}
+\def\bibname{参考文献}
+\def\contentsname{\hfill 目录\hfill}
+\def\contentsnamenospace{目录}
+\def\appendixname{附录}
 
+
+\def\maketitle{
   % Page 1
   \thispagestyle{empty}
   \rule{0pt}{0pt}\\[15pt]
@@ -251,11 +349,11 @@
   {\bf \Qiqi@University@eng}\\[15pt]
   {\bf \Qiqi@Address@eng}\\[15pt]
   {\bf \Qiqi@Date@eng}
-  
+
   % Page 3
   \clearpage
-  \normalsize
   \thispagestyle{empty}
+  \normalsize
   \justifying
   \begin{center}
     {\bf\large 独创性声明}
@@ -294,5 +392,35 @@
     日期：\hspace{2em}年\hspace{2em}月\hspace{2em}日
   \end{tabular}
 
+  
+  % Page 4
+  \chapter*{摘要}
+  \addcontentsline{toc}{chapter}{摘要}  
+  \linespread{1.67}
+  \setcounter{page}{1}
+  \renewcommand{\thepage}{\Roman{page}}
+  \normalsize
+  \justifying
+  \Qiqi@Abstract@chs
+
+  \noindent{\bf 关键词：}\Qiqi@Keywords@chs
+
+  % Page 5
+  \chapter*{Abstract}
+  \addcontentsline{toc}{chapter}{Abstract}
+  \normalsize
+  \justifying
+  \Qiqi@Abstract@eng
+
+  \noindent{\bf Key words:} \Qiqi@Keywords@eng
+
+  % Page 5
+  \newpage  
+  \pdfbookmark{\contentsnamenospace}{\contentsnamenospace}
+  \tableofcontents
+
+  \newpage
+  \setcounter{page}{1}
+  \renewcommand{\thepage}{\arabic{page}}
 }
 
