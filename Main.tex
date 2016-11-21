@@ -2,68 +2,13 @@
 %!TEX builder = latexmk
 
 \documentclass[degree = phd]{./Template/Thesis}
-% Command           % English                                       % Chinese               % Comment
-\ClassificationCode                                                 {23333333}              % 分类号
-\Author             [Open Sam]                                      {张三}                  % 作者姓名
-\StudentID                                                          {U23333333}             % 学号
-\University         [New Room Bear University]                      {新屋熊国立大学}        % 学校
-\Address            [New Room Bear Road, Wuhan, Hubei, P. R. China] {中国湖北武汉新屋熊}    % 地址
-\UniversityCode                                                     {ni484sa}               % 学校编号
-\SecurityLevel                                                      {随便看}                % 密级
-\UniversityTitle                                                    {./Logos/Title.pdf}     % 校名图片
-\UniversityLogo                                                     {./Logos/Badge.pdf}     % 校徽
-\Department         [School of Mogician]                            {膜法学院}              % 学院
-\Supervisor         [4th Lee]                                       {李四}                  % 指导教师
-\Date               [2016.10.17]                                    {2016 年 10 月 17 日}   % 日期
-\Title              [An Example of Using thesis \LaTeX{} Template]  {\LaTeX{} 模板使用示例} % 论文标题
 
-\Abstract
-[ % English
-  This is a \LaTeX{} template example file. This template is used in written thesis for Huazhong University of Science \& Technology.
-
-  The author is Qiqi.
-]
-{ % Chinese
-  这这是一个 \LaTeX{} 模板使用实例文件，该模板用于华中科技大学毕业设计、学士论文、硕士论文和博士论文写作中。
-
-  作者 Qiqi。
-}
-
-\Keywords
-[
-  \LaTeX{},
-  New Room Bear University,
-  Thesis,
-  Template
-]
-{
-  \LaTeX{},
-  新屋熊国立大学,
-  学位论文,
-  模板
-}
+\input{./Configuration}
+\input{./Glossaries}
 
 \begin{document}
 \maketitle
-
-% \pagestyle{fancy}
-\chapter{介是章节标题}
-\section{介是一级标题}
-\section{介是一级标题}
-\subsection{介是二级标题}
-\subsection{介是二级标题}
-\subsubsection{介是三级标题}
-\subsubsection{介是三级标题}
-\subsubsubsection{介是四级标题}
-\subsubsubsection{介是四级标题}
-\subsubsubsubsection{介是五级标题}
-\subsubsubsubsection{介是五级标题}
-\subsubsubsubsection{介是五级标题}
-
-
-\section{介是一级标题}
-\chapter{介是章标题}
-\chapter{介是章标题}
-
-
+  \input{./Chapters/UsageOfTemplate}
+  \input{./Chapters/SomeAdvices}
+  \input{./Chapters/SomeExamples}
 \end{document}

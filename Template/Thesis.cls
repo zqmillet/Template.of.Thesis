@@ -4,313 +4,426 @@
 
 \RequirePackage{ifthen}
 \RequirePackage{xkeyval}
-\gdef\Qiqi@Degree{none}
-\DeclareOptionX{degree}[none]{
-  \ifthenelse
-  { % if
-    \equal{#1}{none}     \OR 
-    \equal{#1}{fyp}      \OR 
-    \equal{#1}{bachelor} \OR 
-    \equal{#1}{master}   \OR 
-    \equal{#1}{phd}
+  \gdef\Qiqi@Degree{none}
+  \DeclareOptionX{degree}[none]{
+    \ifthenelse
+    { % if
+      \equal{#1}{none}     \OR 
+      \equal{#1}{fyp}      \OR 
+      \equal{#1}{bachelor} \OR 
+      \equal{#1}{master}   \OR 
+      \equal{#1}{phd}
+    }
+    { % then
+      \gdef\Qiqi@Degree{#1}
+    }
+    { % else
+      \ClassError{Thesis}
+      {Option degree can only be 'none', 'fyp', 'bachelor', 'master' or 'phd'}
+      {Try to remove option degree^^J}
+    }
   }
-  { % then
-    \gdef\Qiqi@Degree{#1}
-  }
-  { % else
-    \ClassError{Thesis}
-    {Option degree can only be 'none', 'fyp', 'bachelor', 'master' or 'phd'}
-    {Try to remove option degree^^J}
-  }
-}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
-\ProcessOptionsX
-\LoadClass[12pt, a4paper, openany]{book}
+  \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
+  \ProcessOptionsX
+  \LoadClass[12pt, a4paper, openany]{book}
+
+\RequirePackage{anyfontsize} % This package is used to remove the warning "Font shape ... in size ... not available"
 \RequirePackage{xeCJK}
+  \setmainfont{Times New Roman}
+  \setmonofont{Consolas}
+  \setCJKmainfont[BoldFont = 黑体, ItalicFont = 楷体]{宋体}
+  \setCJKmonofont{仿宋}
+  \xeCJKsetup{CJKspace=false}
+
 \RequirePackage{CJKfntef}
 \RequirePackage{indentfirst}
+  \setlength{\parindent}{2em}
 \RequirePackage{ragged2e}
-\setlength{\parindent}{2em}
-\setlength{\parskip}{0pt plus 2pt minus 1pt}
-\linespread{1.2}
-\RequirePackage{amsmath, amssymb, amsfonts, wasysym}
-\RequirePackage[amsmath, amsthm, thmmarks, hyperref, thref]{ntheorem}
+  \setlength{\parindent}{2em}
+  \setlength{\parskip}{0pt plus 2pt minus 1pt}
+  \linespread{1.2}
+
+\RequirePackage{listings}
+  \lstset{
+    language   = TeX,
+    basicstyle = \ttfamily
+  }
+\RequirePackage{amsmath, amssymb, amsfonts, wasysym, mathrsfs}
+\RequirePackage[amsmath, amsthm, thmmarks, hyperref]{ntheorem}
 \RequirePackage[bookmarks = true, pdfborder = {0 0 0}]{hyperref}
 \RequirePackage[titles]{tocloft}
-\newskip\old@cftbeforechapskip
-\old@cftbeforechapskip\cftbeforechapskip
-\let\old@l@chapter\l@chapter
-\let\old@l@section\l@section
-\def\l@chapter#1#2{\old@l@chapter{#1}{#2}\cftbeforechapskip0pt}% set your value here
-\def\l@section#1#2{\old@l@section{#1}{#2}\cftbeforechapskip\old@cftbeforechapskip}
+  \newskip\old@cftbeforechapskip
+  \old@cftbeforechapskip\cftbeforechapskip
+  \let\old@l@chapter\l@chapter
+  \let\old@l@section\l@section
+  \def\l@chapter#1#2{\old@l@chapter{#1}{#2}\cftbeforechapskip0pt}% set your value here
+  \def\l@section#1#2{\old@l@section{#1}{#2}\cftbeforechapskip\old@cftbeforechapskip}
 
-%\renewcommand\cftbeforechapskip{\vspace{-10pt}}
 \RequirePackage{geometry}
-\geometry{
-  top     = 1.2in,
-  bottom  = 1.2in,
-  left    = 1.0in,
-  right   = 1.0in,
-  headsep = 0.2in,
-  headheight = 15pt,
-  nomarginpar,
-  showframe
-}
-\RequirePackage{longtable, tabu}
+  \geometry{
+    top        =  1.2in,
+    bottom     =  1.2in,
+    left       =  1.0in,
+    right      =  1.0in,
+    headsep    =  0.2in,
+    headheight = 15.0pt,
+    nomarginpar,
+    % showframe
+  }
+\RequirePackage{enumitem}
+  \setenumerate[1]{itemsep = 0pt, partopsep = 0pt, parsep = \parskip, topsep = 5pt}
+  \setitemize[1]  {itemsep = 0pt, partopsep = 0pt, parsep = \parskip, topsep = 5pt}
+  \setitemize[2]  {itemsep = 0pt, partopsep = 0pt, parsep = \parskip, topsep = 5pt}
+  \setdescription {itemsep = 0pt, partopsep = 0pt, parsep = \parskip, topsep = 5pt}
 
-\setmainfont{Times New Roman}
-\setmonofont{Consolas}
-\setCJKmainfont[BoldFont = 黑体, ItalicFont = 楷体]{宋体}
-\setCJKmonofont{仿宋}
+\RequirePackage{tcolorbox}
+  \newtcbox{\Tag}[1][black!50]{
+    on line,
+    arc          = 4pt,
+    colback      = black!75,
+    colframe     = black!75,
+    before upper = {\rule[-3pt]{0pt}{10pt}},
+    boxrule      = 1pt,
+    fontupper    = \color{white}\bf,
+    boxsep       = 0pt,
+    left         = 2pt,
+    right        = 2pt,
+    top          = 2pt,
+    bottom       = 0pt
+  }
+
+\RequirePackage[toc, indexonlyfirst, section = chapter, acronym, nomain]{glossaries}
+  \newglossary[var]{variable}{vai}{vao}{符号表}
+  \newglossary[hid]{hide}{hii}{hio}{符号表}
+  \makeglossaries
+
+\RequirePackage{longtable, tabu}
 \RequirePackage{zhnumber}
 \RequirePackage{titlesec}
 \RequirePackage{titletoc}
-
-\newcommand\subsubsubsection{\@startsection{paragraph}{4}{\z@}
-{-3.5ex \@plus -1ex \@minus -.2ex}%
-{1.3ex \@plus.2ex}%
-{\bfseries\normalsize}}
-
-\newcommand\subsubsubsubsection{\@startsection{subparagraph}{5}{\z@}
-{-3.5ex \@plus -1ex \@minus -.2ex}%
-{2ex \@plus.2ex}%
-{\bfseries\normalsize}}
-
-
-\titleformat{\chapter}
-{
-  \bfseries
-  \centering
-  \fontsize{18pt}{23.4pt}\selectfont
-}
-{  
-  \zhnumber{\thechapter}
-}
-{1em}
-{}
-\titlespacing*{\chapter}{0pt}{18pt}{6pt}
-
-\titleformat*{\section}{\bfseries\fontsize{16pt}{20.8pt}\selectfont}
-\titlespacing*{\section}{0pt}{18pt}{6pt}
-\titleformat*{\subsection}{\bfseries\fontsize{14pt}{18.2pt}\selectfont}
-\titlespacing*{\subsection}{0pt}{12pt}{6pt}
-\titleformat*{\subsubsection}{\bfseries\fontsize{13pt}{16.9pt}\selectfont}
-\titlespacing*{\subsubsection}{0pt}{12pt}{6pt}
-\setcounter{secnumdepth}{5}
-\setcounter{tocdepth}{5}
-\contentsmargin{2.0em}
+  \newcommand\subsubsubsection{\@startsection{paragraph}{4}{\z@}
+    {-3.5ex \@plus -1ex \@minus -.2ex}%
+    {1.3ex \@plus.2ex}%
+    {\bfseries\normalsize}}
+  \newcommand\subsubsubsubsection{\@startsection{subparagraph}{5}{\z@}
+    {-3.5ex \@plus -1ex \@minus -.2ex}%
+    {2ex \@plus.2ex}%
+    {\bfseries\normalsize}}
+  \titleformat{\chapter}
+    {
+      \bfseries
+      \centering
+      \fontsize{18pt}{23.4pt}\selectfont
+    }
+    {  
+      \zhnumber{\thechapter}
+    }{1em}{}
+  \titlespacing*{\chapter}{0pt}{18pt}{6pt}
+  \titleformat*{\section}{\bfseries\fontsize{16pt}{20.8pt}\selectfont}
+  \titlespacing*{\section}{0pt}{18pt}{6pt}
+  \titleformat*{\subsection}{\bfseries\fontsize{14pt}{18.2pt}\selectfont}
+  \titlespacing*{\subsection}{0pt}{12pt}{6pt}
+  \titleformat*{\subsubsection}{\bfseries\fontsize{13pt}{16.9pt}\selectfont}
+  \titlespacing*{\subsubsection}{0pt}{12pt}{6pt}
+  \setcounter{secnumdepth}{5}
+  \setcounter{tocdepth}{5}
+  \contentsmargin{2.0em}
 
 \RequirePackage{fancyhdr}
-\pagestyle{fancy}
-\lhead{}
-\chead{\makebox[0.7\textwidth][s]{\it \Qiqi@University@chs\Qiqi@ApplyName@chs}}
-\rhead{}
-\lfoot{}
-\cfoot{\thepage}
-\rfoot{}
-\renewcommand{\headrulewidth}{2pt}
-\renewcommand{\footrulewidth}{0pt}
+  \pagestyle{fancy}
+  \lhead{}
+  \chead{\makebox[0.7\textwidth][s]{\it \Qiqi@University@chs\Qiqi@ApplyName@chs}}
+  \rhead{}
+  \lfoot{}
+  \cfoot{\thepage}
+  \rfoot{}
+  \renewcommand{\headrulewidth}{2pt}
+  \renewcommand{\footrulewidth}{0pt}
+
 \RequirePackage{etoolbox}
-\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+  \patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
 
 
 \RequirePackage{xparse}
-\DeclareDocumentCommand\Author{o m}{
-  \IfNoValueTF{#1}
-  {
-    \gdef\Qiqi@Author@chs{#2}
-    \gdef\Qiqi@Author@eng{#2}
+  \DeclareDocumentCommand\newacronym{o m m m}{
+    \IfNoValueTF{#1}
+    {
+      \def\acronymtype{acronym}
+    }
+    {
+      \def\acronymtype{#1}
+    }
+
+    \ifthenelse{\equal{\acronymtype}{noacronym}}
+    {
+      \newglossaryentry{#2}
+      {
+        long        = {#3},
+        description = {#4},
+        type        = {hide},
+        sort        = {L},
+        text        = {\glsentrydesc{\glslabel}},
+        name        = {\glslabel},  
+        first       = {\glsentrydesc{\glslabel}(\glsentrylong{\glslabel})}
+      }
+    }
+    {
+      \newglossaryentry{#2}
+      {
+        long        = {#3},
+        description = {#4},
+        type        = {\acronymtype},
+        sort        = {L},
+        text        = {\glslabel},
+        name        = {\glslabel},  
+        first       = {\glsentrydesc{\glslabel}(\glsentrylong{\glslabel}, \glslabel)}
+      }
+    }    
   }
-  {
-    \gdef\Qiqi@Author@chs{#2}
-    \gdef\Qiqi@Author@eng{#1}
+
+  \DeclareDocumentCommand\newvariable{m m m}{
+    \newglossaryentry{#1}
+    {      
+      name        = {\ensuremath{#2}},
+      description = {#3},
+      sort        = {L},
+      type        = {variable}
+    }
   }
-}
 
-\DeclareDocumentCommand\Address{o m}{
-  \IfNoValueTF{#1}
-  {
-    \gdef\Qiqi@Address@chs{#2}
-    \gdef\Qiqi@Address@eng{#2}
+  \newglossarystyle{Acronym}{
+  \renewenvironment{theglossary}
+       {\small\begin{longtabu}{X[-1]XX[-1]X[c, -1]}\tabucline[1pt]{-}缩写 & 英文全称 & 中文含义 & 首次出现页码\\\hline}%
+       {\tabucline[1pt]{-}\end{longtabu}}
+    \renewcommand*{\glspostdescription}{}
+    \renewcommand*{\glossaryheader}{}
+    \renewcommand*{\glsgroupheading}[1]{}
+    \renewcommand*{\glossaryentryfield}[5]{
+      \glstarget{##1}{\glsentrytext{##1}} & \glsentrylong{##1} & ##3 & 第 ##5 页\\}
   }
-  {
-    \gdef\Qiqi@Address@chs{#2}
-    \gdef\Qiqi@Address@eng{#1}
+
+  \newglossarystyle{Variable}{
+  \renewenvironment{theglossary}
+       {\begin{longtabu}{X[-1]XX[c, -1]}\tabucline[1pt]{-}符号 & 含义 & 首次出现页码\\\hline}%
+       {\tabucline[1pt]{-}\end{longtabu}}
+    \renewcommand*{\glspostdescription}{}
+    \renewcommand*{\glossaryheader}{}
+    \renewcommand*{\glsgroupheading}[1]{}
+    \renewcommand*{\glossaryentryfield}[5]{
+      \glstarget{##1}{\glsentrytext{##1}} & ##3 & 第 ##5 页\\}
   }
-}
 
-\DeclareDocumentCommand\University{o m}{
-  \IfNoValueTF{#1}
-  {
-    \gdef\Qiqi@University@chs{#2}
-    \gdef\Qiqi@University@eng{#2}
+  \DeclareDocumentCommand\Author{o m}{
+    \IfNoValueTF{#1}
+    {
+      \gdef\Qiqi@Author@chs{#2}
+      \gdef\Qiqi@Author@eng{#2}
+    }
+    {
+      \gdef\Qiqi@Author@chs{#2}
+      \gdef\Qiqi@Author@eng{#1}
+    }
   }
-  {
-    \gdef\Qiqi@University@chs{#2}
-    \gdef\Qiqi@University@eng{#1}
+
+  \DeclareDocumentCommand\Address{o m}{
+    \IfNoValueTF{#1}
+    {
+      \gdef\Qiqi@Address@chs{#2}
+      \gdef\Qiqi@Address@eng{#2}
+    }
+    {
+      \gdef\Qiqi@Address@chs{#2}
+      \gdef\Qiqi@Address@eng{#1}
+    }
   }
-}
 
-\DeclareDocumentCommand\Department{o m}{
-  \IfNoValueTF{#1}
-  {
-    \gdef\Qiqi@Department@chs{#2}
-    \gdef\Qiqi@Department@eng{#2}
+  \DeclareDocumentCommand\University{o m}{
+    \IfNoValueTF{#1}
+    {
+      \gdef\Qiqi@University@chs{#2}
+      \gdef\Qiqi@University@eng{#2}
+    }
+    {
+      \gdef\Qiqi@University@chs{#2}
+      \gdef\Qiqi@University@eng{#1}
+    }
   }
-  {
-    \gdef\Qiqi@Department@chs{#2}
-    \gdef\Qiqi@Department@eng{#1}
+
+  \DeclareDocumentCommand\Department{o m}{
+    \IfNoValueTF{#1}
+    {
+      \gdef\Qiqi@Department@chs{#2}
+      \gdef\Qiqi@Department@eng{#2}
+    }
+    {
+      \gdef\Qiqi@Department@chs{#2}
+      \gdef\Qiqi@Department@eng{#1}
+    }
   }
-}
 
-\DeclareDocumentCommand\Supervisor{o m}{
-  \IfNoValueTF{#1}
-  {
-    \gdef\Qiqi@Supervisor@chs{#2}
-    \gdef\Qiqi@Supervisor@eng{#2}
+  \DeclareDocumentCommand\Supervisor{o m}{
+    \IfNoValueTF{#1}
+    {
+      \gdef\Qiqi@Supervisor@chs{#2}
+      \gdef\Qiqi@Supervisor@eng{#2}
+    }
+    {
+      \gdef\Qiqi@Supervisor@chs{#2}
+      \gdef\Qiqi@Supervisor@eng{#1}
+    }
   }
-  {
-    \gdef\Qiqi@Supervisor@chs{#2}
-    \gdef\Qiqi@Supervisor@eng{#1}
+
+  \DeclareDocumentCommand\Date{o m}{
+    \IfNoValueTF{#1}
+    {
+      \gdef\Qiqi@Date@chs{#2}
+      \gdef\Qiqi@Date@eng{#2}
+    }
+    {
+      \gdef\Qiqi@Date@chs{#2}
+      \gdef\Qiqi@Date@eng{#1}
+    }
   }
-}
 
-\DeclareDocumentCommand\Date{o m}{
-  \IfNoValueTF{#1}
-  {
-    \gdef\Qiqi@Date@chs{#2}
-    \gdef\Qiqi@Date@eng{#2}
+  \DeclareDocumentCommand\Title{o m}{
+    \IfNoValueTF{#1}
+    {
+      \gdef\Qiqi@Title@chs{#2}
+      \gdef\Qiqi@Title@eng{#2}
+    }
+    {
+      \gdef\Qiqi@Title@chs{#2}
+      \gdef\Qiqi@Title@eng{#1}
+    }
   }
+
+  \DeclareDocumentCommand\Abstract{+o +m}
   {
-    \gdef\Qiqi@Date@chs{#2}
-    \gdef\Qiqi@Date@eng{#1}
+    \IfNoValueTF{#1}
+    {
+      \long\gdef\Qiqi@Abstract@chs{#2}
+      \long\gdef\Qiqi@Abstract@eng{#2}
+    }{
+      \long\gdef\Qiqi@Abstract@chs{#2}
+      \long\gdef\Qiqi@Abstract@eng{#1}
+    }
   }
-}
 
-\DeclareDocumentCommand\Title{o m}{
-  \IfNoValueTF{#1}
-  {
-    \gdef\Qiqi@Title@chs{#2}
-    \gdef\Qiqi@Title@eng{#2}
+  \DeclareDocumentCommand\Keywords{o m}{
+    \IfNoValueTF{#1}
+    {
+      \gdef\Qiqi@Keywords@chs{#2}
+      \gdef\Qiqi@Keywords@eng{#2}
+    }
+    {
+      \gdef\Qiqi@Keywords@chs{#2}
+      \gdef\Qiqi@Keywords@eng{#1}
+    }
   }
-  {
-    \gdef\Qiqi@Title@chs{#2}
-    \gdef\Qiqi@Title@eng{#1}
+
+  \DeclareDocumentCommand\UniversityLogo{m}{
+    \gdef\Qiqi@UniversityLogo{#1}
   }
-}
 
-\DeclareDocumentCommand\Abstract{+o +m}
-{
-  \IfNoValueTF{#1}
-  {
-    \long\gdef\Qiqi@Abstract@chs{#2}
-    \long\gdef\Qiqi@Abstract@eng{#2}
-  }{
-    \long\gdef\Qiqi@Abstract@chs{#2}
-    \long\gdef\Qiqi@Abstract@eng{#1}
+  \DeclareDocumentCommand\UniversityTitle{m}{
+    \gdef\Qiqi@UniversityTitle{#1}
   }
-}
 
-\DeclareDocumentCommand\Keywords{o m}{
-  \IfNoValueTF{#1}
-  {
-    \gdef\Qiqi@Keywords@chs{#2}
-    \gdef\Qiqi@Keywords@eng{#2}
+  \DeclareDocumentCommand\ClassificationCode{m}{
+    \gdef\Qiqi@ClassificationCode{#1}
   }
-  {
-    \gdef\Qiqi@Keywords@chs{#2}
-    \gdef\Qiqi@Keywords@eng{#1}
+
+  \DeclareDocumentCommand\UniversityCode{m}{
+    \gdef\Qiqi@UniversityCode{#1}
   }
-}
 
-\DeclareDocumentCommand\UniversityLogo{m}{
-  \gdef\Qiqi@UniversityLogo{#1}
-}
+  \DeclareDocumentCommand\StudentID{m}{
+    \gdef\Qiqi@StudentID{#1}
+  }
 
-\DeclareDocumentCommand\UniversityTitle{m}{
-  \gdef\Qiqi@UniversityTitle{#1}
-}
+  \DeclareDocumentCommand\SecurityLevel{m}{
+    \gdef\Qiqi@SecurityLevel{#1}
+  }
 
-\DeclareDocumentCommand\ClassificationCode{m}{
-  \gdef\Qiqi@ClassificationCode{#1}
-}
+  \ifthenelse
+  { % if
+    \equal{\Qiqi@Degree}{none}
+  }
+  { % then
+    \gdef\Qiqi@ApplyName@chs{学位论文}
+    \gdef\Qiqi@ApplyName@eng{A Thesis Submitted in Partial Fulfillment of the Requirements for the Degree}
+  }
+  { % else
+  }
 
-\DeclareDocumentCommand\UniversityCode{m}{
-  \gdef\Qiqi@UniversityCode{#1}
-}
+  \ifthenelse
+  { % if
+    \equal{\Qiqi@Degree}{fyp}
+  }
+  { % then
+    \gdef\Qiqi@ApplyName@chs{毕业设计论文}
+    \gdef\Qiqi@ApplyName@eng{A Thesis Submitted in Partial Fulfillment of the Requirements for Final Year Project}
+  }
+  { % else
+  }
 
-\DeclareDocumentCommand\StudentID{m}{
-  \gdef\Qiqi@StudentID{#1}
-}
+  \ifthenelse
+  { % if
+    \equal{\Qiqi@Degree}{bachelor}
+  }
+  { % then
+    \gdef\Qiqi@ApplyName@chs{学士学位论文}
+    \gdef\Qiqi@ApplyName@eng{A Thesis Submitted in Partial Fulfillment of the Requirements for the Degree of Bachelor}
+  }
+  { % else
+  }
 
-\DeclareDocumentCommand\SecurityLevel{m}{
-  \gdef\Qiqi@SecurityLevel{#1}
-}
+  \ifthenelse
+  { % if
+    \equal{\Qiqi@Degree}{master}
+  }
+  { % then
+    \gdef\Qiqi@ApplyName@chs{硕士学位论文}
+    \gdef\Qiqi@ApplyName@eng{A Thesis Submitted in Partial Fulfillment of the Requirements for the Degree of Master}
+  }
+  { % else
+  }
 
-\ifthenelse
-{ %if
-  \equal{\Qiqi@Degree}{none}
-}
-{ %then
-  \gdef\Qiqi@ApplyName@chs{学位论文}
-  \gdef\Qiqi@ApplyName@eng{A Thesis Submitted in Partial Fulfillment of the Requirements for the Degree}
-}
-{ % else
-}
+  \ifthenelse
+  { % if
+    \equal{\Qiqi@Degree}{phd}
+  }
+  { % then
+    \gdef\Qiqi@ApplyName@chs{博士学位论文}
+    \gdef\Qiqi@ApplyName@eng{A Thesis Submitted in Partial Fulfillment of the Requirements for the Ph.D}
+  }
+  { % else
+  }
 
-\ifthenelse
-{ %if
-  \equal{\Qiqi@Degree}{fyp}
-}
-{ %then
-  \gdef\Qiqi@ApplyName@chs{毕业设计论文}
-  \gdef\Qiqi@ApplyName@eng{A Thesis Submitted in Partial Fulfillment of the Requirements for Final Year Project}
-}
-{ % else
-}
+\RequirePackage{syntax}
 
-\ifthenelse
-{ %if
-  \equal{\Qiqi@Degree}{bachelor}
-}
-{ %then
-  \gdef\Qiqi@ApplyName@chs{学士学位论文}
-  \gdef\Qiqi@ApplyName@eng{A Thesis Submitted in Partial Fulfillment of the Requirements for the Degree of Bachelor}
-}
-{ % else
-}
-
-\ifthenelse
-{ %if
-  \equal{\Qiqi@Degree}{master}
-}
-{ %then
-  \gdef\Qiqi@ApplyName@chs{硕士学位论文}
-  \gdef\Qiqi@ApplyName@eng{A Thesis Submitted in Partial Fulfillment of the Requirements for the Degree of Master}
-}
-{ % else
-}
-
-\ifthenelse
-{ %if
-  \equal{\Qiqi@Degree}{phd}
-}
-{ %then
-  \gdef\Qiqi@ApplyName@chs{博士学位论文}
-  \gdef\Qiqi@ApplyName@eng{A Thesis Submitted in Partial Fulfillment of the Requirements for the Ph.D}
-}
-{ % else
-}
-
-\def\indexname{索引}
-\def\figurename{图}
-\def\tablename{表}
-\def\listingscaption{代码}
-\def\bibname{参考文献}
-\def\contentsname{\hfill 目录\hfill}
+\def\indexname          {索引}
+\def\figurename         {图}
+\def\tablename          {表}
+\def\listingscaption    {代码}
+\def\bibname            {参考文献}
+\def\contentsname       {目\hspace{1em}录}
 \def\contentsnamenospace{目录}
-\def\appendixname{附录}
+\def\appendixname       {附录}
 
+\RequirePackage{cleveref}
+\crefname{equation}{公式}{公式}
+\Crefname{equation}{公式}{公式}
+\crefname{appendix}{附录}{附录}
+\Crefname{appendix}{附录}{附录}
+\crefname{figure}{图}{图}
+\Crefname{figure}{图}{图}
+\crefformat{chapter}{第#2\zhnumber{#1}#3章}
+\Crefformat{chapter}{第#2\zhnumber{#1}#3章}
+\crefformat{section}{第 #2#1#3 小节}
+\Crefformat{section}{第 #2#1#3 小节}
+\crefformat{paragraph}{第 #2#1#3 小节}
+\Crefformat{paragraph}{第 #2#1#3 小节}
 
 \def\maketitle{
   % Page 1
@@ -397,8 +510,7 @@
   \chapter*{摘要}
   \addcontentsline{toc}{chapter}{摘要}  
   \linespread{1.67}
-  \setcounter{page}{1}
-  \renewcommand{\thepage}{\Roman{page}}
+  \pagenumbering{Roman}
   \normalsize
   \justifying
   \Qiqi@Abstract@chs
@@ -418,9 +530,15 @@
   \newpage  
   \pdfbookmark{\contentsnamenospace}{\contentsnamenospace}
   \tableofcontents
+  
+  \newpage
+  \printglossary[style = Acronym, title={缩写含义表}]
 
   \newpage
-  \setcounter{page}{1}
-  \renewcommand{\thepage}{\arabic{page}}
-}
+  \printglossary[style = Variable, type = variable, title={符号表}]
 
+  \newpage
+  %\setcounter{page}{1}
+  %\renewcommand{\thepage}{\arabic{page}}
+  \pagenumbering{arabic}
+}
